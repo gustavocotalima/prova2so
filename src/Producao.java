@@ -76,7 +76,6 @@ public class Producao implements Runnable{
             plantando();
             crescendo();
             colhendo();
-            notify();
             vendendo();
         }
     }

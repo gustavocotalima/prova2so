@@ -7,13 +7,15 @@ public class Caminhao implements Runnable{
     private int capacidade;
     private List<Produto> produtos;
     private Celeiro celeiro;
-    private Semaphore semaforo;
+    private Semaphore semaforoCeleiro;
+    private Semaphore semaforoDeposito;
 
-    public Caminhao(Caminhoneiro caminhoneiro, int capacidade, Semaphore semaforo) {
+    public Caminhao(Caminhoneiro caminhoneiro, int capacidade, Semaphore semaforoCeleiro, Semaphore semaforoDeposito) {
         this.caminhoneiro = caminhoneiro;
         this.capacidade = capacidade;
         this.produtos = new ArrayList<Produto>();
-        this.semaforo = semaforo;
+        this.semaforoCeleiro = semaforoCeleiro;
+        this.semaforoDeposito = semaforoDeposito;
     }
 
     public Caminhoneiro getCaminhoneiro() {
@@ -34,17 +36,24 @@ public class Caminhao implements Runnable{
 
     public void carregarCaminhao(Produto produto){
         try {
-            semaforo.acquire();
+            semaforoCeleiro.acquire();
             celeiro.removerProduto(produto);
             produtos.add(produto);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        semaforo.release();
+        semaforoCeleiro.release();
     }
 
     public void descarregarCaminhao(){
+        try {
+            semaforoDeposito.acquire();
 
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        semaforoDeposito.release();
     }
 
     public void buscarProduto(){
@@ -69,6 +78,7 @@ public class Caminhao implements Runnable{
             buscarProduto();
             viajar();
             descarregarCaminhao();
+            viajar();
         }
     }
 }
