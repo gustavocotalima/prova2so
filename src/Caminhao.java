@@ -46,12 +46,12 @@ public class Caminhao implements Runnable{
     }
 
     public void carregarCaminhao(){
-        while (produtos.size()<capacidade) {
-            if(celeiro.getProdutos().isEmpty() && !produtos.isEmpty())
-                return;
+        while(produtos.size()<capacidade) {
             if (!celeiro.getProdutos().isEmpty()) {
+                System.out.println(3);
                 try {
                     semaforoCeleiro.acquire();
+                    System.out.println(4);
                     Produto p = celeiro.getProdutos().get(0);
                     celeiro.removerProduto(p);
                     produtos.add(p);
