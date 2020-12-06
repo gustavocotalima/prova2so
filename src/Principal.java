@@ -8,9 +8,9 @@ public class Principal {
         Semaphore semaforoCeleiro = new Semaphore(1);
         Semaphore semaforoDeposito = new Semaphore(1);
 
-        Fruta melancia = new Fruta("melancia", 2, 10,3);
-        Fruta uva = new Fruta("uva", 2, 9,3);
-        Fruta morango = new Fruta("morango", 2,7,2);
+        Fruta melancia = new Fruta("melancia", 2, 1,3);
+        Fruta uva = new Fruta("uva", 2, 2,3);
+        Fruta morango = new Fruta("morango", 2,2,2);
 
         Fazendeiro tiago = new Fazendeiro("Tiago");
         Fazendeiro joao = new Fazendeiro("João");
