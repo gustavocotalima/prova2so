@@ -25,6 +25,14 @@ public class Caminhao implements Runnable{
         return caminhoneiro;
     }
 
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
+
     public void setCaminhoneiro(Caminhoneiro caminhoneiro) {
         this.caminhoneiro = caminhoneiro;
     }

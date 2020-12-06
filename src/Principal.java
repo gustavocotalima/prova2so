@@ -22,9 +22,8 @@ public class Principal {
         producoes.add(new Producao(joao, uva));
         producoes.add(new Producao(alice, morango));
 
-        for(Producao produtor : producoes) {
+        for(Producao produtor : producoes)
             threads.add(new Thread(produtor));
-        }
 
         Comerciante manuel = new Comerciante("Manuel");
 
@@ -41,19 +40,30 @@ public class Principal {
         Caminhoneiro pedro = new Caminhoneiro("Pedro");
         Caminhoneiro bino = new Caminhoneiro("Bino");
 
-        Caminhao caminhaoPedro = new Caminhao(pedro,3, celeiro, deposito, semaforoCeleiro, semaforoDeposito);
-        Caminhao caminhaoBino = new Caminhao(bino,2, celeiro, deposito, semaforoCeleiro, semaforoDeposito);
+        List<Caminhao> caminhoes = new ArrayList<Caminhao>();
 
-        threads.add(new Thread(caminhaoPedro));
-        threads.add(new Thread(caminhaoBino));
+        caminhoes.add(new Caminhao(pedro,3, celeiro, deposito, semaforoCeleiro, semaforoDeposito));
+        caminhoes.add(new Caminhao(bino,2, celeiro, deposito, semaforoCeleiro, semaforoDeposito));
 
-        Cliente ladainha = new Cliente("ladainha", deposito);
-        Cliente gustavo = new Cliente("gustavo", deposito);
-        Cliente seguranca = new Cliente("seguranca", deposito);
+        for(Caminhao caminhao : caminhoes)
+            threads.add(new Thread(caminhao));
 
-        for(Thread thread : threads) {
+
+        List<Cliente> clientes = new ArrayList<Cliente>();
+
+        clientes.add(new Cliente("ladainha", deposito));
+        clientes.add(new Cliente("gustavo", deposito));
+        clientes.add(new Cliente("seguranca", deposito));
+
+        for(Cliente cliente : clientes)
+            threads.add(new Thread(cliente));
+
+        Impressao impressao = new Impressao(producoes,celeiro,caminhoes,deposito,clientes);
+
+        threads.add(new Thread(impressao));
+
+        for(Thread thread : threads)
             thread.start();
-        }
 
     }
 }

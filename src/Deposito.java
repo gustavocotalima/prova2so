@@ -48,6 +48,8 @@ public class Deposito implements Runnable{
     }
 
     public Produto comprar() {
+        if (produtos.isEmpty())
+            return null;
         Produto p = produtos.get(0);
         produtos.remove(0);
         return p;
