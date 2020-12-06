@@ -31,6 +31,14 @@ public class Deposito implements Runnable{
         this.capacidade = capacidade;
     }
 
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
+
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
+
     public void adicionarProduto(Produto produto){
         this.produtos.add(produto);
     }
@@ -39,10 +47,18 @@ public class Deposito implements Runnable{
         this.produtos.remove(produto);
     }
 
+    public Produto comprar() {
+        Produto p = produtos.get(0);
+        produtos.remove(0);
+        return p;
+    }
+
     @Override
     public void run() {
         while(true){
 
         }
     }
+
+
 }

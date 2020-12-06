@@ -49,21 +49,28 @@ public class Caminhao implements Runnable{
     }
 
     public void descarregarCaminhao(){
-        try {
-            semaforoDeposito.acquire();
+        while (!produtos.isEmpty()) {
+            if (deposito.getProdutos().size()<deposito.getCapacidade()) {
+                try {
+                    semaforoDeposito.acquire();
+                    Produto aux = produtos.get(0);
+                    produtos.remove(aux);
+                    deposito.adicionarProduto(aux);
 
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                semaforoDeposito.release();
+            }
         }
-        semaforoDeposito.release();
     }
 
     public void buscarProduto(){
         while (produtos.size()<capacidade) {
-            if(celeiro.getProdutos().isEmpty())
+            if(celeiro.getProdutos().isEmpty() && !produtos.isEmpty())
                 return;
-            carregarCaminhao(celeiro.getProdutos().get(0));
+            if (!celeiro.getProdutos().isEmpty())
+                carregarCaminhao(celeiro.getProdutos().get(0));
         }
     }
 
