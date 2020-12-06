@@ -31,12 +31,17 @@ public class Impressao implements Runnable{
                 System.out.println(producao.getFazendeiro().getNome()+": "+producao.getStatus() +" "+ producao.getFruta().getNome());
             }
             System.out.println();
-            System.out.println("Estado Atual do Celeiro:" + celeiro.getProdutos().size());
+            System.out.println("Estado Atual do Celeiro:" + celeiro.getProdutos().size()+"/"+celeiro.getCapacidade());
             System.out.println();
             for(Caminhao caminhao : caminhoes){
                 System.out.println(caminhao.getCaminhoneiro().getNome()+": "+caminhao.getProdutos().size());
             }
-
+            System.out.println();
+            System.out.println("Estado Atual do Deposito:" + deposito.getProdutos().size()+"/"+deposito.getCapacidade());
+            System.out.println();
+            for(Cliente cliente : clientes){
+                System.out.println(cliente.getNome()+": "+cliente.getTarefa());
+            }
         }
     }
 }

@@ -45,23 +45,15 @@ public class Caminhao implements Runnable{
         this.capacidade = capacidade;
     }
 
-    public void carregarCaminhao(){
-        while(produtos.size()<capacidade) {
-            if (!celeiro.getProdutos().isEmpty()) {
-                System.out.println(3);
-                try {
-                    semaforoCeleiro.acquire();
-                    System.out.println(4);
-                    Produto p = celeiro.getProdutos().get(0);
-                    celeiro.removerProduto(p);
-                    produtos.add(p);
+    private void carregarCaminhao() {
+        if(produtos.size()==capacidade)
+            return;
+            System.out.println(4);
+            Produto p = celeiro.getProdutos().get(0);
+            celeiro.removerProduto(p);
+            produtos.add(p);
 
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                semaforoCeleiro.release();
-            }
-        }
+
     }
 
     public void descarregarCaminhao(){
@@ -92,10 +84,20 @@ public class Caminhao implements Runnable{
     @Override
     public void run() {
         while(true){
-            carregarCaminhao();
+            try {
+                semaforoCeleiro.acquire();
+                while (celeiro.getProdutos().size()>0){
+                    carregarCaminhao();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            semaforoCeleiro.release();
             viajar();
             descarregarCaminhao();
             viajar();
         }
     }
+
+
 }
