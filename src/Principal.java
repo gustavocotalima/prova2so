@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Principal {
     public static void main(String[]args){
         List<Thread> threads = new ArrayList<>();
+        Semaphore semaforo = new Semaphore(1);
 
         Fruta melancia = new Fruta("melancia", 2, 10,3);
         Fruta uva = new Fruta("uva", 2, 9,3);
@@ -13,19 +15,19 @@ public class Principal {
         Fazendeiro joao = new Fazendeiro("João");
         Fazendeiro alice = new Fazendeiro("Alice");
 
-        List<Producao> produtores = new ArrayList<>();
+        List<Producao> producoes = new ArrayList<>();
 
-        produtores.add(new Producao(tiago, melancia));
-        produtores.add(new Producao(joao, uva));
-        produtores.add(new Producao(alice, morango));
+        producoes.add(new Producao(tiago, melancia));
+        producoes.add(new Producao(joao, uva));
+        producoes.add(new Producao(alice, morango));
 
-        for(Producao produtor : produtores) {
+        for(Producao produtor : producoes) {
             threads.add(new Thread(produtor));
         }
 
         Comerciante manuel = new Comerciante("Manuel");
 
-        Celeiro celeiro = new Celeiro(manuel, 10, produtores);
+        Celeiro celeiro = new Celeiro(manuel, 10, producoes, semaforo);
 
         threads.add(new Thread(celeiro));
 

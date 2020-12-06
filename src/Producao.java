@@ -62,7 +62,12 @@ public class Producao implements Runnable{
 
     private void vendendo(){
         this.status = Status.Vendendo;
-
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        while(this.status == Status.Vendendo);
     }
 
     @Override
@@ -71,6 +76,8 @@ public class Producao implements Runnable{
             plantando();
             crescendo();
             colhendo();
+            notify();
+            vendendo();
         }
     }
 }

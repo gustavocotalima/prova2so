@@ -1,17 +1,20 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Celeiro implements Runnable{
     private Comerciante comerciante;
-    private List<Fruta> frutas;
+    private List<Producao> producoes;
+    private List<Produto> produtos;
     private int capacidade;
-    private List<Producao> produtores;
+    private Semaphore semaforo;
 
-    public Celeiro(Comerciante comerciante, int capacidade, List<Producao> produtores) {
+    public Celeiro(Comerciante comerciante, int capacidade, List<Producao> producoes, Semaphore semaforo) {
         this.comerciante = comerciante;
-        this.frutas = new ArrayList<Fruta>();
+        this.produtos = new ArrayList<Produto>();
         this.capacidade = capacidade;
-        this.produtores = produtores;
+        this.producoes = producoes;
+        this.semaforo = semaforo;
     }
 
     public Comerciante getComerciante() {
@@ -30,16 +33,43 @@ public class Celeiro implements Runnable{
         this.capacidade = capacidade;
     }
 
-    public void adicionarFruta(Fruta fruta){
-        this.frutas.add(fruta);
+    public List<Produto> getProdutos() {
+        return produtos;
     }
 
-    public void removerFruta(Fruta fruta){
-        this.frutas.remove(fruta);
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
+
+    public void adicionarProduto(Produto produto){
+        this.produtos.add(produto);
+    }
+
+    public void removerProduto(Produto produto){
+        this.produtos.remove(produto);
+    }
+
+    private void checarProducao(){
+        for (Producao producao : producoes) {
+            if (producao.getStatus() == Status.Vendendo) {
+                if (produtos.size()<capacidade) {
+                    try {
+                        semaforo.acquire();
+                        adicionarProduto(new Produto(producao.getFruta(), producao.getFazendeiro()));
+                        producao.setStatus(Status.Plantando);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    semaforo.release();
+                }
+            }
+        }
     }
 
     @Override
     public void run() {
-
+        while (true) {
+            checarProducao();
+        }
     }
 }
