@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-public class Deposito {
+public class Deposito implements Runnable{
     private Gerente gerente;
     private List<Produto> produtos;
     private int capacidade;
@@ -29,5 +29,20 @@ public class Deposito {
 
     public void setCapacidade(int capacidade) {
         this.capacidade = capacidade;
+    }
+
+    public void adicionarProduto(Produto produto){
+        this.produtos.add(produto);
+    }
+
+    public void removerProduto(Produto produto){
+        this.produtos.remove(produto);
+    }
+
+    @Override
+    public void run() {
+        while(true){
+
+        }
     }
 }

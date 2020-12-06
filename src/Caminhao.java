@@ -7,15 +7,18 @@ public class Caminhao implements Runnable{
     private int capacidade;
     private List<Produto> produtos;
     private Celeiro celeiro;
+    private Deposito deposito;
     private Semaphore semaforoCeleiro;
     private Semaphore semaforoDeposito;
 
-    public Caminhao(Caminhoneiro caminhoneiro, int capacidade, Semaphore semaforoCeleiro, Semaphore semaforoDeposito) {
+    public Caminhao(Caminhoneiro caminhoneiro, int capacidade, Celeiro celeiro, Deposito deposito, Semaphore semaforoCeleiro, Semaphore semaforoDeposito) {
         this.caminhoneiro = caminhoneiro;
         this.capacidade = capacidade;
-        this.produtos = new ArrayList<Produto>();
+        this.celeiro = celeiro;
+        this.deposito = deposito;
         this.semaforoCeleiro = semaforoCeleiro;
         this.semaforoDeposito = semaforoDeposito;
+        this.produtos = new ArrayList<Produto>();
     }
 
     public Caminhoneiro getCaminhoneiro() {
