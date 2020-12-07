@@ -5,12 +5,14 @@ public class Cliente extends Pessoa implements Runnable{
     List<Produto> produto;
     Deposito deposito;
     tarefaCliente tarefa;
+    int tempoTarefa;
 
-    public Cliente(String nome, Deposito deposito) {
+    public Cliente(String nome, Deposito deposito, int tempoTarefa) {
         super(nome);
         this.produto = new ArrayList<Produto>();
         this.deposito = deposito;
         this.tarefa = tarefaCliente.Comprando;
+        this.tempoTarefa = tempoTarefa;
     }
 
     public List<Produto> getProduto() {
@@ -42,7 +44,7 @@ public class Cliente extends Pessoa implements Runnable{
     private void tarefasVariadas(){
         this.tarefa = tarefaCliente.TarefasVariadas;
         try {
-            Thread.sleep(15000);
+            Thread.sleep(tempoTarefa*1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

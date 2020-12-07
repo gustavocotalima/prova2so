@@ -1,16 +1,43 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 
 public class Principal {
     public static void main(String[]args){
+        Scanner s = new Scanner(System.in);
         List<Thread> threads = new ArrayList<>();
         Semaphore semaforoCeleiro = new Semaphore(1);
         Semaphore semaforoDeposito = new Semaphore(1);
 
-        Fruta melancia = new Fruta("melancia", 2, 1,3);
-        Fruta uva = new Fruta("uva", 2, 2,3);
-        Fruta morango = new Fruta("morango", 2,2,2);
+        System.out.print("Insira o tempo de plantacao (s):");
+        int tempoPlantacao=s.nextInt();
+        System.out.print("Insira o tempo de crescimento (s):");
+        int tempoCrescimento = s.nextInt();
+        System.out.print("Insira o tempo de colheita (s):");
+        int tempoColheita = s.nextInt();
+
+        System.out.print("Insira a capacidade maxima do celeiro: ");
+        int capacidadeCeleiro = s.nextInt();
+
+        System.out.print("Insira a capacidade maxima do caminhao: ");
+        int capacidadeCaminhao = s.nextInt();
+
+        System.out.print("Insira o tempo de viajem do caminhao (s): ");
+        int tempoViagem = s.nextInt();
+
+        System.out.print("Insira a capacidade maxima do deposito: ");
+        int capacidadeDeposito = s.nextInt();
+
+        System.out.print("Insira a quantidade de clientes: ");
+        int quantidadeClientes = s.nextInt();
+
+        System.out.print("Insira o tempo de tarefas do cliente: (s)");
+        int tempoTarefa = s.nextInt();
+
+        Fruta melancia = new Fruta("melancia", tempoPlantacao, tempoCrescimento,tempoColheita);
+        Fruta uva = new Fruta("uva", tempoPlantacao, tempoCrescimento,tempoColheita);
+        Fruta morango = new Fruta("morango", tempoPlantacao,tempoCrescimento,tempoColheita);
 
         Fazendeiro tiago = new Fazendeiro("Tiago");
         Fazendeiro joao = new Fazendeiro("João");
@@ -27,13 +54,13 @@ public class Principal {
 
         Comerciante manuel = new Comerciante("Manuel");
 
-        Celeiro celeiro = new Celeiro(manuel, 10, producoes, semaforoCeleiro);
+        Celeiro celeiro = new Celeiro(manuel, capacidadeCeleiro, producoes, semaforoCeleiro);
 
         threads.add(new Thread(celeiro));
 
         Gerente ragnar = new Gerente("Ragnar");
 
-        Deposito deposito = new Deposito(ragnar, 20, semaforoDeposito);
+        Deposito deposito = new Deposito(ragnar, capacidadeDeposito, semaforoDeposito);
 
         threads.add(new Thread(deposito));
 
@@ -42,8 +69,8 @@ public class Principal {
 
         List<Caminhao> caminhoes = new ArrayList<Caminhao>();
 
-        caminhoes.add(new Caminhao(pedro,3, celeiro, deposito, semaforoCeleiro, semaforoDeposito));
-        caminhoes.add(new Caminhao(bino,2, celeiro, deposito, semaforoCeleiro, semaforoDeposito));
+        caminhoes.add(new Caminhao(pedro, tempoViagem,capacidadeCaminhao, celeiro, deposito, semaforoCeleiro, semaforoDeposito));
+        caminhoes.add(new Caminhao(bino, tempoViagem,capacidadeCaminhao, celeiro, deposito, semaforoCeleiro, semaforoDeposito));
 
         for(Caminhao caminhao : caminhoes)
             threads.add(new Thread(caminhao));
@@ -51,9 +78,12 @@ public class Principal {
 
         List<Cliente> clientes = new ArrayList<Cliente>();
 
-        clientes.add(new Cliente("ladainha", deposito));
-        clientes.add(new Cliente("gustavo", deposito));
-        clientes.add(new Cliente("seguranca", deposito));
+        for (int i = 0; i < quantidadeClientes; i++) {
+            if (i < 28)
+                clientes.add(new Cliente((String.valueOf((char) (i + 65))+String.valueOf((char) (i + 65))), deposito, tempoTarefa));
+            else
+                clientes.add(new Cliente(Integer.toString(i), deposito, tempoTarefa));
+        }
 
         for(Cliente cliente : clientes)
             threads.add(new Thread(cliente));
