@@ -1,12 +1,12 @@
 public class Producao implements Runnable{
     private Fazendeiro fazendeiro;
     private Fruta fruta;
-    private Status status;
+    private StatusProducao statusProducao;
 
     public Producao(Fazendeiro fazendeiro, Fruta fruta) {
         this.fazendeiro = fazendeiro;
         this.fruta = fruta;
-        this.status = Status.Plantando;
+        this.statusProducao = StatusProducao.Plantando;
     }
 
     public Fazendeiro getFazendeiro() {
@@ -25,16 +25,16 @@ public class Producao implements Runnable{
         this.fruta = fruta;
     }
 
-    public Status getStatus() {
-        return status;
+    public StatusProducao getStatus() {
+        return statusProducao;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(StatusProducao statusProducao) {
+        this.statusProducao = statusProducao;
     }
 
     private void plantando(){
-        this.status = Status.Plantando;
+        this.statusProducao = StatusProducao.Plantando;
         try {
             Thread.sleep(this.getFruta().getTempoPlantacao() * 1000);
         } catch (InterruptedException e) {
@@ -43,7 +43,7 @@ public class Producao implements Runnable{
     }
 
     private void crescendo(){
-        this.status = Status.Crescendo;
+        this.statusProducao = StatusProducao.Crescendo;
         try {
             Thread.sleep(this.getFruta().getTempoCrescimento()*1000);
         } catch (InterruptedException e) {
@@ -52,7 +52,7 @@ public class Producao implements Runnable{
     }
 
     private void colhendo(){
-        this.status = Status.Colhendo;
+        this.statusProducao = StatusProducao.Colhendo;
         try {
             Thread.sleep(this.getFruta().getTempoColheita()*1000);
         } catch (InterruptedException e) {
@@ -61,13 +61,13 @@ public class Producao implements Runnable{
     }
 
     private void vendendo(){
-        this.status = Status.Vendendo;
+        this.statusProducao = StatusProducao.Vendendo;
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        while(this.status == Status.Vendendo);
+        while(this.statusProducao == StatusProducao.Vendendo);
     }
 
     @Override

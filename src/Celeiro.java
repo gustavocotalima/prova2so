@@ -51,12 +51,12 @@ public class Celeiro implements Runnable{
 
     private void checarProducao(){
         for (Producao producao : producoes) {
-            if (producao.getStatus() == Status.Vendendo) {
+            if (producao.getStatus() == StatusProducao.Vendendo) {
                 if (produtos.size()<capacidade) {
                     try {
                         semaforo.acquire();
                         adicionarProduto(new Produto(producao.getFruta(), producao.getFazendeiro()));
-                        producao.setStatus(Status.Plantando);
+                        producao.setStatus(StatusProducao.Plantando);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
